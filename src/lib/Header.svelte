@@ -8,7 +8,7 @@
   };
 </script>
 
-<header class="bg-white border-b sticky top-0 z-10">
+<header class="bg-[#3e6380] border-b sticky top-0 z-10">
   <Navbar>
     <!-- Brand -->
     <NavBrand href="/">
