@@ -1,0 +1,324 @@
+
+ 
+/* @import url('https://fonts.googleapis.com/css2?family=Corben:wght@400;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Orelega+One&family=Outfit:wght@100;200;300;400;500;600;700;800;900&family=Ovo&family=Poller+One&display=swap'); */
+ 
+
+@font-face {
+    font-family: 'pecitabook';
+    src: url('/fonts/pecita/pecita-webfont.woff2') format('woff2'),
+         url('/fonts/pecita/pecita-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* corben */
+@font-face {
+    font-family: 'corbenregular';
+    src: url('/fonts/corben/corben-regular-webfont.woff2') format('woff2'),
+         url('/fonts/corben/corben-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'corbenbold';
+    src: url('/fonts/corben/corben-bold-webfont.woff2') format('woff2'),
+         url('/fonts/corben/corben-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+/* corben */
+
+/* inter  */
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter/Inter-Black.woff2') format('woff2'),
+        url('/fonts/inter/Inter-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter/Inter-ExtraBold.woff2') format('woff2'),
+        url('/fonts/inter/Inter-ExtraBold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter/Inter-Bold.woff2') format('woff2'),
+        url('/fonts/inter/Inter-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter/Inter-ExtraLight.woff2') format('woff2'),
+        url('/fonts/inter/Inter-ExtraLight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter/Inter-Medium.woff2') format('woff2'),
+        url('/fonts/inter/Inter-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter/Inter-Light.woff2') format('woff2'),
+        url('/fonts/inter/Inter-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter/Inter-Regular.woff2') format('woff2'),
+        url('/fonts/inter/Inter-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter/Inter-Thin.woff2') format('woff2'),
+        url('/fonts/inter/Inter-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter/Inter-SemiBold.woff2') format('woff2'),
+        url('/fonts/inter/Inter-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* inter  */
+
+/* orelega_one */
+@font-face {
+    font-family: 'Orelega One';
+    src: url('/fonts/orelega_one/OrelegaOne-Regular.woff2') format('woff2'),
+        url('/fonts/orelega_one/OrelegaOne-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+/* orelega_one */
+
+/* outfit  */
+
+@font-face {
+    font-family: 'Outfit';
+    src: url('/fonts/outfit/Outfit-Black.woff2') format('woff2'),
+        url('/fonts/outfit/Outfit-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Outfit';
+    src: url('/fonts/outfit/Outfit-Bold.woff2') format('woff2'),
+        url('/fonts/outfit/Outfit-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Outfit';
+    src: url('/fonts/outfit/Outfit-Medium.woff2') format('woff2'),
+        url('/fonts/outfit/Outfit-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Outfit';
+    src: url('/fonts/outfit/Outfit-Light.woff2') format('woff2'),
+        url('/fonts/outfit/Outfit-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Outfit';
+    src: url('/fonts/outfit/Outfit-SemiBold.woff2') format('woff2'),
+        url('/fonts/outfit/Outfit-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Outfit';
+    src: url('/fonts/outfit/Outfit-ExtraBold.woff2') format('woff2'),
+        url('/fonts/outfit/Outfit-ExtraBold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Outfit';
+    src: url('/fonts/outfit/Outfit-Regular.woff2') format('woff2'),
+        url('/fonts/outfit/Outfit-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Outfit';
+    src: url('/fonts/outfit/Outfit-Thin.woff2') format('woff2'),
+        url('/fonts/outfit/Outfit-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Outfit';
+    src: url('/fonts/outfit/Outfit-ExtraLight.woff2') format('woff2'),
+        url('/fonts/outfit/Outfit-ExtraLight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+ /* out fit  */
+
+ /* Ovo */
+ @font-face {
+    font-family: 'Ovo';
+    src: url('/fonts/ovo/Ovo.woff2') format('woff2'),
+        url('/fonts/ovo/Ovo.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+/* Ovo */
+
+/* poller  */
+@font-face {
+    font-family: 'Poller One';
+    src: url('/fonts/poller/PollerOne-Regular.woff2') format('woff2'),
+        url('/fonts/poller/PollerOne-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+/* poller  */
+
+/* Helvetica */
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/fonts/helvetica/HelveticaNeue-Bold.woff2') format('woff2'),
+        url('/fonts/helvetica/HelveticaNeue-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/fonts/helvetica/HelveticaNeue-Light.woff2') format('woff2'),
+        url('/fonts/helvetica/HelveticaNeue-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/fonts/helvetica/HelveticaNeue-Medium.woff2') format('woff2'),
+        url('/fonts/helvetica/HelveticaNeue-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/fonts/helvetica/HelveticaNeue-Thin.woff2') format('woff2'),
+        url('/fonts/helvetica/HelveticaNeue-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+/* Helvetica */
+
+
+body{     
+    font-family: 'Outfit', sans-serif;   
+    /*font-family: 'Corben', serif;
+    font-family: 'Inter', sans-serif;
+    font-family: 'Orelega One', serif;
+    font-family: 'Outfit', sans-serif;
+    font-family: 'Ovo', serif;
+    font-family: 'Poller One', serif; */
+    font-weight: 400;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{    
+    font-family: 'Orelega One', serif;
+}
+
+.font_pecita{
+    font-family: 'pecitabook';
+}
+
+.font_Corben{
+    font-family: 'corbenregular', serif;
+}
+
+.font_Inter{
+    font-family: 'Inter', sans-serif;
+}
+
+.font_OrelegaOne{    
+    font-family: 'Orelega One', serif;
+}
+.font_Outfit{
+    font-family: 'Outfit', sans-serif;  
+}
+
+.font_Ovo{
+    font-family: 'Ovo', serif;
+}
+.font_pollerone{
+    font-family: 'Poller One', serif;
+}
+
+.font_HelveticaNeue{
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+/* .edit_section  role[tabpanel] {
+    border: 3px solid red;
+} */
