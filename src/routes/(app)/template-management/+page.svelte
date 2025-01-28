@@ -54,18 +54,18 @@
   <title>Template Management</title>
 </svelte:head>
 
-<div class="min-h-screen bg-gray-100">
+<div class="min-h-screen bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300">
   <div class="p-6 max-w-7xl mx-auto space-y-8">
     <!-- Top Matrix Section -->
     <div
       in:fly={{ y: -20, duration: 500, delay: 200 }}
       out:fade
-      class="bg-white overflow-hidden shadow-lg rounded-lg p-6"
+      class="bg-gradient-to-br from-white to-gray-100 shadow-lg rounded-lg p-6"
     >
       <h2 class="text-2xl font-bold mb-6 text-gray-800">Template Statistics</h2>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div
-          class="bg-gradient-to-br from-indigo-500 to-indigo-600 overflow-hidden shadow-md rounded-lg text-white"
+          class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 overflow-hidden shadow-md rounded-lg text-white"
         >
           <div class="p-5">
             <div class="flex items-center">
@@ -93,7 +93,7 @@
     <div
       in:fly={{ y: 20, duration: 500, delay: 400 }}
       out:fade
-      class="bg-white rounded-lg shadow-lg p-6"
+      class="bg-gradient-to-br from-gray-50 to-gray-200 rounded-lg shadow-lg p-6"
     >
       <h3 class="text-xl font-semibold mb-4 text-gray-800">
         Search and Filter
@@ -134,7 +134,7 @@
           </select>
         </div>
         <button
-          class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition duration-150 ease-in-out transform hover:scale-105"
+          class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white px-6 py-2 rounded-md hover:from-indigo-700 hover:to-pink-700 transition duration-150 ease-in-out transform hover:scale-105"
         >
           Search
         </button>
@@ -145,7 +145,7 @@
     <div
       in:fly={{ y: 20, duration: 500, delay: 600 }}
       out:fade
-      class="bg-white rounded-lg shadow-lg"
+      class="bg-gradient-to-br from-white to-gray-100 rounded-lg shadow-lg"
     >
       <div
         class="p-6 flex justify-between items-center border-b border-gray-200"
@@ -155,7 +155,7 @@
         </h2>
         <a
           href="/form-builder"
-          class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-150 ease-in-out transform hover:scale-105 flex items-center gap-2"
+          class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white px-4 py-2 rounded-md hover:from-indigo-700 hover:to-pink-700 transition duration-150 ease-in-out transform hover:scale-105 flex items-center gap-2"
         >
           <span class="text-xl">+</span> Create a Template
         </a>
@@ -169,11 +169,11 @@
       {:else}
         <div class="overflow-x-auto">
           <table class="w-full">
-            <thead class="bg-gray-50">
+            <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
               <tr>
                 <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >ProcessID</th
+                  >SL No</th
                 >
                 <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -220,13 +220,13 @@
                     <div class="flex gap-2">
                       <a
                         href={`/form-editor/${form._id}`}
-                        class="bg-indigo-600 text-white px-3 py-1 rounded text-sm hover:bg-indigo-700"
+                        class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white px-3 py-1 rounded text-sm hover:from-indigo-700 hover:to-pink-700"
                       >
                         View/Edit
                       </a>
                       <button
                         on:click={() => deleteForm(form._id)}
-                        class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600"
+                        class="bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1 rounded text-sm hover:from-red-600 hover:to-red-700"
                       >
                         Delete
                       </button>
@@ -241,3 +241,4 @@
     </div>
   </div>
 </div>
+

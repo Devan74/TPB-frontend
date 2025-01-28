@@ -163,26 +163,27 @@
 <div class="h-screen bg-gray-50">
   <div class="flex">
     <!-- Left Sidebar - Form Fields -->
-    <div class="w-64 bg-white border-r border-gray-200 overflow-y-auto">
+    <div class="w-64 bg-gradient-to-br from-white via-gray-50 to-gray-100 border-r border-gray-300 overflow-y-auto shadow-md">
       <div class="p-4">
-        <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+        <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-4">
           Form Fields
         </h2>
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 gap-3">
           {#each Object.entries(fieldTypes) as [type, { icon, label }]}
             <div
-              class="flex flex-col items-center p-3 bg-white rounded-lg border border-gray-200 hover:border-indigo-500 cursor-move transition-colors"
+              class="flex flex-col items-center p-4 bg-gradient-to-br from-indigo-100 via-indigo-50 to-white rounded-xl border border-gray-300 hover:border-indigo-500 hover:shadow-lg cursor-pointer transition-all duration-200"
               draggable="true"
               on:dragstart={e => e.dataTransfer.setData("text/plain", type)}
               on:click={() => addField(type)}
             >
-              <span class="text-lg font-semibold text-indigo-600 mb-1">{icon}</span>
-              <span class="text-xs text-gray-600">{label}</span>
+              <span class="text-xl font-semibold text-indigo-600 mb-2">{icon}</span>
+              <span class="text-sm font-medium text-gray-700">{label}</span>
             </div>
           {/each}
         </div>
       </div>
     </div>
+    
     <!-- Main Content Area -->
     <div class="flex-1 flex flex-col overflow-hidden">
       <!-- Form Name and Save Button -->
