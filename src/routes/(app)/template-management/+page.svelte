@@ -219,7 +219,7 @@
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div class="flex gap-2">
                       <a
-                        href={`/edit-form/${form._id}`}
+                        href={`/form-editor/${form._id}`}
                         class="bg-indigo-600 text-white px-3 py-1 rounded text-sm hover:bg-indigo-700"
                       >
                         View/Edit
