@@ -7,6 +7,7 @@
   import * as yup from "yup";
   import axios from "axios";
   import { goto } from "$app/navigation";
+  import { toasts } from "svelte-toasts";
 
   let email = "";
   let password = "";
@@ -32,18 +33,23 @@
 
     try {
       await schema.validate({ email, password }, { abortEarly: false });
-      const response = await axios.post(
-        "http://localhost:8000/api/auth/login",
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axios.post("http://localhost:8000/api/auth/login", {
+        email,
+        password,
+      });
 
       if (response.status === 200) {
-        console.log("Logged in successfully:", response.data);
+        // console.log("Logged in successfully:", response.data);
         localStorage.setItem("token", response.data.token);
-        alert("Login successful!");
+
+        toasts.add({
+          title: "Success",
+          description: "Login successful!",
+          duration: 3000,
+          placement: "top-right",
+          type: "success",
+          theme: "dark",
+        });
 
         goto("/template-management");
       }
@@ -107,3 +113,5 @@
     </form>
   </div>
 </div>
+
+
