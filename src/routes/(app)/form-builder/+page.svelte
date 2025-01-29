@@ -3,6 +3,8 @@
   import { fade } from "svelte/transition";
   import axios from 'axios';
   import { flip } from "svelte/animate";
+  import { toasts } from "svelte-toasts";
+  import { goto } from "$app/navigation";
 
   interface Validation {
     required?: boolean;
@@ -142,11 +144,26 @@
       };
 
       const response = await axios.post('http://localhost:8000/api/forms', formData);
-      console.log('Form saved successfully:', response.data);
-      alert('Form saved successfully!');
+      // console.log('Form saved successfully:', response.data);
+      toasts.add({
+          title: "Success",
+          description: "Form Saved successful",
+          duration: 3000,
+          placement: "top-center",
+          type: "success",
+          theme: "dark",
+        });
+        goto("/template-management");
     } catch (error) {
       console.error('Error saving form:', error);
-      alert('Error saving form. Please try again.');
+      toasts.add({
+          title: "failure",
+          description: "did't save successful",
+          duration: 3000,
+          placement: "top-center",
+          type: "success",
+          theme: "dark",
+        });
     }
   }
 

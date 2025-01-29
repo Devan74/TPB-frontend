@@ -3,6 +3,7 @@
   import { FormInput, Loader } from "lucide-svelte";
   import axios from "axios";
   import { fade, fly } from "svelte/transition";
+  import { toasts } from "svelte-toasts";
 
   let forms = [];
   let searchQuery = "";

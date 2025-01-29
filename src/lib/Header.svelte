@@ -1,9 +1,18 @@
 <script>
   import { Navbar, NavBrand, NavLi, NavUl } from "flowbite-svelte";
   import { goto } from "$app/navigation";
+  import { toasts } from "svelte-toasts";
 
   const logout = () => {
     localStorage.removeItem("token");
+    toasts.add({
+          title: "Success",
+          description: "Logout successful",
+          duration: 3000,
+          placement: "top-right",
+          type: "success",
+          theme: "dark",
+        });
     goto("/login");
   };
 </script>
