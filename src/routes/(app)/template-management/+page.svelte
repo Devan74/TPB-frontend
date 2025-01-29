@@ -3,7 +3,6 @@
   import { FormInput, Loader } from "lucide-svelte";
   import axios from "axios";
   import { fade, fly } from "svelte/transition";
-  import { toasts } from "svelte-toasts";
 
   let forms = [];
   let searchQuery = "";
@@ -212,7 +211,7 @@
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <span
-                      class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                      class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {form.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}"
                     >
                       {form.status}
                     </span>
