@@ -11,7 +11,7 @@
 <header class="bg-[#3e6380] border-b sticky top-0 z-10">
   <Navbar>
     <!-- Brand -->
-    <NavBrand href="/">
+    <NavBrand href="/template-management">
       <img
         src="/img/fidelity_logo.jpeg"
         class="mr-3 h-6 sm:h-9"
