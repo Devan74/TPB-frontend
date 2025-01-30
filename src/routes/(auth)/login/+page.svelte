@@ -11,8 +11,10 @@
 
   let email = "";
   let password = "";
+
   const errors = writable({ email: "", password: "" });
 
+  // Validation schema
   const schema = yup.object().shape({
     email: yup
       .string()
@@ -27,21 +29,22 @@
       .required("Password is required"),
   });
 
+  // Form submission handler
   const handleSubmit = async (event) => {
     event.preventDefault();
     errors.set({ email: "", password: "" });
 
     try {
+      // Validate form data
       await schema.validate({ email, password }, { abortEarly: false });
       const response = await axios.post("http://localhost:8000/api/auth/login", {
         email,
         password,
       });
-
       if (response.status === 200) {
-        // console.log("Logged in successfully:", response.data);
         localStorage.setItem("token", response.data.token);
 
+        // Show success toast
         toasts.add({
           title: "Success",
           description: "Login successful!",
@@ -50,7 +53,6 @@
           type: "success",
           theme: "dark",
         });
-
         goto("/template-management");
       }
     } catch (validationErrors) {
@@ -64,6 +66,7 @@
 </script>
 
 <div class="bg-gray-100 flex justify-center items-center h-screen">
+  <!-- Image Section -->
   <div class="w-1/2 h-screen hidden lg:block">
     <img
       src="/img/login.png"
@@ -73,9 +76,11 @@
     />
   </div>
 
+  <!-- Form Section -->
   <div class="lg:p-36 md:p-52 sm:p-20 p-8 w-full lg:w-1/2">
     <h1 class="text-2xl font-semibold mb-4">Login</h1>
     <form on:submit={handleSubmit}>
+      <!-- Email Input -->
       <div class="mb-4">
         <label for="email" class="block text-gray-600">Email</label>
         <input
@@ -90,6 +95,7 @@
         {/if}
       </div>
 
+      <!-- Password Input -->
       <div class="mb-4">
         <label for="password" class="block text-gray-600">Password</label>
         <input
@@ -104,6 +110,7 @@
         {/if}
       </div>
 
+      <!-- Submit Button -->
       <button
         type="submit"
         class="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
@@ -113,5 +120,3 @@
     </form>
   </div>
 </div>
-
-

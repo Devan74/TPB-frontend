@@ -9,6 +9,15 @@
   let selectedDate = "";
   let selectedStatus = "";
   let loading = true;
+  let error = null;
+
+  // Pagination
+  let currentPage = 1;
+  const itemsPerPage = 5;
+
+  // Modal state
+  let showDeleteModal = false;
+  let formToDelete = null;
 
   // Fetch all forms
   async function fetchForms() {
@@ -16,20 +25,38 @@
       const response = await axios.get("http://localhost:8000/api/forms");
       forms = response.data;
       loading = false;
-    } catch (error) {
-      console.error("Error fetching forms:", error);
+    } catch (err) {
+      console.error("Error fetching forms:", err);
+      error = "Failed to fetch forms. Please try again later.";
       loading = false;
     }
   }
 
+  // Open delete confirmation modal
+  function openDeleteModal(form) {
+    formToDelete = form;
+    showDeleteModal = true;
+  }
+
+  // Close delete confirmation modal
+  function closeDeleteModal() {
+    showDeleteModal = false;
+    formToDelete = null;
+  }
+
   // Delete form
-  async function deleteForm(id) {
-    if (confirm("Are you sure you want to delete this form?")) {
+  async function confirmDelete() {
+    if (formToDelete) {
       try {
-        await axios.delete(`http://localhost:8000/api/forms/${id}`);
-        forms = forms.filter((form) => form._id !== id);
-      } catch (error) {
-        console.error("Error deleting form:", error);
+        await axios.delete(
+          `http://localhost:8000/api/forms/${formToDelete._id}`
+        );
+        forms = forms.filter((form) => form._id !== formToDelete._id);
+        closeDeleteModal();
+      } catch (err) {
+        console.error("Error deleting form:", err);
+        error = "Failed to delete the form. Please try again.";
+        closeDeleteModal();
       }
     }
   }
@@ -47,6 +74,15 @@
     return matchesSearch && matchesDate && matchesStatus;
   });
 
+  // Paginated forms
+  $: paginatedForms = filteredForms.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  // Total pages for pagination
+  $: totalPages = Math.ceil(filteredForms.length / itemsPerPage);
+
   onMount(fetchForms);
 </script>
 
@@ -54,8 +90,19 @@
   <title>Template Management</title>
 </svelte:head>
 
-<div class="min-h-screen bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300">
+<div
+  class="min-h-screen bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300"
+>
   <div class="p-6 max-w-7xl mx-auto space-y-8">
+    <!-- Error Message -->
+    {#if error}
+      <div
+        class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
+      >
+        {error}
+      </div>
+    {/if}
+
     <!-- Top Matrix Section -->
     <div
       in:fly={{ y: -20, duration: 500, delay: 200 }}
@@ -100,10 +147,12 @@
       </h3>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Search</label
+          <label
+            for="search"
+            class="block text-sm font-medium text-gray-700 mb-1">Search</label
           >
           <input
+            id="search"
             type="text"
             bind:value={searchQuery}
             placeholder="Enter template name"
@@ -111,20 +160,23 @@
           />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
+          <label for="date" class="block text-sm font-medium text-gray-700 mb-1"
             >Date</label
           >
           <input
+            id="date"
             type="date"
             bind:value={selectedDate}
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
           />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Status</label
+          <label
+            for="status"
+            class="block text-sm font-medium text-gray-700 mb-1">Status</label
           >
           <select
+            id="status"
             bind:value={selectedStatus}
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
           >
@@ -194,13 +246,13 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              {#each filteredForms as form, i (form._id)}
+              {#each paginatedForms as form, i (form._id)}
                 <tr
                   transition:fade={{ duration: 150 }}
                   class="hover:bg-gray-50"
                 >
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                    >{i + 1}</td
+                    >{i + 1 + (currentPage - 1) * itemsPerPage}</td
                   >
                   <td
                     class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
@@ -211,7 +263,10 @@
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <span
-                      class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {form.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}"
+                      class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {form.status ===
+                      'active'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-red-100 text-red-800'}"
                     >
                       {form.status}
                     </span>
@@ -225,7 +280,7 @@
                         View/Edit
                       </a>
                       <button
-                        on:click={() => deleteForm(form._id)}
+                        on:click={() => openDeleteModal(form)}
                         class="bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1 rounded text-sm hover:from-red-600 hover:to-red-700"
                       >
                         Delete
@@ -237,8 +292,57 @@
             </tbody>
           </table>
         </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-between items-center mt-4 p-6">
+          <button
+            on:click={() => currentPage--}
+            disabled={currentPage === 1}
+            class="bg-gray-200 px-4 py-2 rounded-md disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button
+            on:click={() => currentPage++}
+            disabled={currentPage === totalPages}
+            class="bg-gray-200 px-4 py-2 rounded-md disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
       {/if}
     </div>
   </div>
 </div>
 
+<!-- Delete Confirmation Modal -->
+{#if showDeleteModal}
+  <div
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
+    on:click|self={closeDeleteModal}
+  >
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">Delete Template</h2>
+      <p class="text-gray-600 mb-6">
+        Are you sure you want to delete the template <strong
+          >{formToDelete?.formName}</strong
+        >? This action cannot be undone.
+      </p>
+      <div class="flex justify-end gap-4">
+        <button
+          on:click={closeDeleteModal}
+          class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition duration-150"
+        >
+          Cancel
+        </button>
+        <button
+          on:click={confirmDelete}
+          class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-150"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+{/if}

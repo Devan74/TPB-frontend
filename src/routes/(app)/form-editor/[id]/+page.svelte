@@ -1,27 +1,36 @@
-<script lang="ts">
-  import { onMount } from 'svelte';
-  import axios from 'axios';
-  import { Loader, Trash } from 'lucide-svelte';
+<script>
+  import { onMount } from "svelte";
+  import axios from "axios";
   import { toasts } from "svelte-toasts";
   import { goto } from "$app/navigation";
+  import { Trash } from "lucide-svelte";
 
-  export let data: { id: string };
+  export let data;
 
-  let form: any = null;
+  let form = null;
   let loading = true;
-  let error: string | null = null;
-  let formValues: Record<string, any> = {};
+  let error = null;
+  let formValues = {};
+  let fieldToDelete = null;
+  let showStatusModal = false;
 
-  // Fetch form from backend
+  const api = axios.create({ baseURL: "http://localhost:8000/api" });
+
+  const handleError = (err, message) => {
+    toasts.add({
+      title: "Error",
+      description: `${message}: ${err.message}`,
+      duration: 3000,
+      placement: "top-center",
+      type: "error",
+      theme: "dark",
+    });
+  };
+
   onMount(async () => {
     try {
-      if (!data.id) {
-        throw new Error('Form ID is undefined');
-      }
-      const response = await axios.get(`http://localhost:8000/api/forms/${data.id}`);
-      if (!response.data) throw new Error('Failed to fetch form');
-      
-      form = response.data;
+      if (!data.id) throw new Error("Form ID is undefined");
+      form = await fetchForm(data.id);
       loading = false;
     } catch (err) {
       error = `Error loading form: ${err.message}`;
@@ -29,30 +38,39 @@
     }
   });
 
-  // Toggle form status and update backend
-  const toggleFormStatus = async () => {
-    if (!form) return;
-
-    form.status = form.status === "active" ? "inactive" : "active"; // Toggle state
-
+  const fetchForm = async (id) => {
     try {
-      await axios.put(`http://localhost:8000/api/forms/${data.id}`, {
-        status: form.status,
-      });
+      const response = await api.get(`/forms/${id}`);
+      return response.data;
     } catch (err) {
-      alert('Error updating form status: ' + err.message);
+      handleError(err, "Failed to fetch form");
+      return null;
     }
   };
 
-  // Save form data including edited labels, deleted fields, and status updates
+  const toggleFormStatus = async () => {
+    if (!form) return;
+    showStatusModal = true;
+  };
+
+  const confirmToggleStatus = async () => {
+    if (!form) return;
+    form.status = form.status === "active" ? "inactive" : "active";
+    try {
+      await api.put(`/forms/${data.id}`, { status: form.status });
+      showStatusModal = false;
+    } catch (err) {
+      handleError(err, "Error updating form status");
+    }
+  };
+
   const saveForm = async () => {
     try {
-      await axios.put(`http://localhost:8000/api/forms/${data.id}`, {
+      await api.put(`/forms/${data.id}`, {
         formName: form.formName,
-        fields: form.fields, 
-        status: form.status
+        fields: form.fields,
+        status: form.status,
       });
-
       toasts.add({
         title: "Success",
         description: "Form updated successfully",
@@ -61,25 +79,25 @@
         type: "success",
         theme: "dark",
       });
-
       goto("/template-management");
     } catch (err) {
-      alert('Error saving form: ' + err.message);
+      handleError(err, "Error saving form");
     }
   };
 
   const deleteField = (fieldId) => {
-  form.fields = form.fields.filter(field => field._id !== fieldId);
+    form.fields = form.fields.filter((field) => field._id !== fieldId);
   };
-
 </script>
 
 <!-- UI Section -->
 <div class="min-h-screen bg-gray-100 p-6">
   <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
     {#if loading}
-      <div class="flex justify-center items-center h-64">
-        <Loader class="animate-spin h-8 w-8 text-indigo-600" />
+      <div class="space-y-4">
+        {#each [1, 2, 3] as _}
+          <div class="h-16 bg-gray-200 animate-pulse rounded-lg"></div>
+        {/each}
       </div>
     {:else if error}
       <p class="text-center text-red-500">{error}</p>
@@ -97,13 +115,35 @@
           <span class="ml-2">Form Status: </span>
           <button
             class={`px-4 py-2 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
-              form.status === 'active' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700'
+              form.status === "active"
+                ? "bg-green-500 text-white"
+                : "bg-gray-200 text-gray-700"
             }`}
             on:click={toggleFormStatus}
           >
-            {form.status === 'active' ? 'Active' : 'Inactive'}
+            {form.status === "active" ? "Active" : "Inactive"}
           </button>
         </div>
+
+        {#if showStatusModal}
+          <div
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+          >
+            <div class="bg-white p-6 rounded-lg">
+              <p>Are you sure you want to change the form status?</p>
+              <div class="flex justify-end mt-4">
+                <button on:click={() => (showStatusModal = false)} class="mr-2"
+                  >Cancel</button
+                >
+                <button
+                  on:click={confirmToggleStatus}
+                  class="bg-red-500 text-white px-4 py-2 rounded"
+                  >Confirm</button
+                >
+              </div>
+            </div>
+          </div>
+        {/if}
 
         <form class="space-y-6">
           {#each form.fields as field (field._id)}
@@ -112,26 +152,28 @@
                 <input
                   type="text"
                   bind:value={field.properties.label}
-                  class=" px-2 py-1 border border-gray-300 rounded-md focus:outline-none"
+                  class="px-2 py-1 border border-gray-300 rounded-md focus:outline-none"
                 />
               </label>
 
-              {#if field.type === 'input'}
+              {#if field.type === "input"}
                 <input
                   id={field.properties.name}
                   bind:value={formValues[field.properties.name]}
-                  placeholder={field.attributes?.placeholder || 'Enter value'}
+                  placeholder={field.attributes?.placeholder || "Enter value"}
                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
                 />
-              {:else if field.type === 'textarea'}
+              {:else if field.type === "textarea"}
                 <textarea
                   id={field.properties.name}
                   bind:value={formValues[field.properties.name]}
-                  placeholder={field.attributes?.placeholder || 'Enter text'}
+                  placeholder={field.attributes?.placeholder || "Enter text"}
                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
                 ></textarea>
-              {:else if field.type === 'radio'}
-                <div class={field.layout?.inline ? 'flex space-x-4' : 'space-y-2'}>
+              {:else if field.type === "radio"}
+                <div
+                  class={field.layout?.inline ? "flex space-x-4" : "space-y-2"}
+                >
                   {#each field.options as option}
                     <label class="inline-flex items-center">
                       <input
@@ -144,8 +186,10 @@
                     </label>
                   {/each}
                 </div>
-              {:else if field.type === 'checkbox'}
-                <div class={field.layout?.inline ? 'flex space-x-4' : 'space-y-2'}>
+              {:else if field.type === "checkbox"}
+                <div
+                  class={field.layout?.inline ? "flex space-x-4" : "space-y-2"}
+                >
                   {#each field.options as option}
                     <label class="inline-flex items-center">
                       <input
@@ -161,16 +205,45 @@
               {/if}
 
               <!-- Delete Button -->
-              <button type="button" on:click={() => deleteField(field._id)}
-                class="absolute top-2 right-2 text-red-600 hover:text-red-800">
+              <button
+                type="button"
+                on:click={() => (fieldToDelete = field._id)}
+                class="absolute top-2 right-2 text-red-600 hover:text-red-800"
+              >
                 <Trash class="w-5 h-5" />
               </button>
             </div>
           {/each}
 
+          {#if fieldToDelete}
+            <div
+              class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+            >
+              <div class="bg-white p-6 rounded-lg">
+                <p>Are you sure you want to delete this field?</p>
+                <div class="flex justify-end mt-4">
+                  <button on:click={() => (fieldToDelete = null)} class="mr-2"
+                    >Cancel</button
+                  >
+                  <button
+                    on:click={() => {
+                      deleteField(fieldToDelete);
+                      fieldToDelete = null;
+                    }}
+                    class="bg-red-500 text-white px-4 py-2 rounded"
+                    >Delete</button
+                  >
+                </div>
+              </div>
+            </div>
+          {/if}
+
           <!-- Save Button -->
-          <button type="button" on:click={saveForm}
-            class="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+          <button
+            type="button"
+            on:click={saveForm}
+            class="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+          >
             Save Changes
           </button>
         </form>

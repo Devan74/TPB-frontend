@@ -1,40 +1,10 @@
-<script lang="ts">
+<script>
   import { dndzone } from "svelte-dnd-action";
   import { fade } from "svelte/transition";
   import axios from 'axios';
   import { flip } from "svelte/animate";
   import { toasts } from "svelte-toasts";
   import { goto } from "$app/navigation";
-
-  interface Validation {
-    required?: boolean;
-    minLength?: number;
-    maxLength?: number;
-    min?: number;
-    max?: number;
-    pattern?: string;
-  }
-
-  interface Field {
-    id: string;
-    type: string;
-    properties: {
-      label: string;
-      name: string;
-    };
-    attributes: {
-      type?: string;
-      placeholder?: string;
-    };
-    options?: Array<{
-      label: string;
-      value: string;
-    }>;
-    layout?: {
-      inline: boolean;
-    };
-    validation?: Validation;
-  }
 
   const fieldTypes = {
     input: { icon: '📝', label: 'Text Input' },
@@ -52,23 +22,23 @@
   };
 
   let formName = "Untitled Form";
-  let fields: Field[] = [];
-  let selectedField: Field | null = null;
+  let fields = [];
+  let selectedField = null;
   let formStatus = 'active';
 
   const inputTypes = [
     "text", "number", "email", "password", "tel", "url", "date", "time"
   ];
 
-  function handleDndConsider(e: CustomEvent<{ items: Field[] }>) {
+  function handleDndConsider(e) {
     fields = e.detail.items;
   }
 
-  function handleDndFinalize(e: CustomEvent<{ items: Field[] }>) {
+  function handleDndFinalize(e) {
     fields = e.detail.items;
   }
 
-  function handleDrop(e: DragEvent) {
+  function handleDrop(e) {
     e.preventDefault();
     const fieldType = e.dataTransfer?.getData("text/plain");
     if (fieldType && fieldTypes[fieldType]) {
@@ -76,8 +46,8 @@
     }
   }
 
-  function addField(fieldType: string) {
-    const newField: Field = {
+  function addField(fieldType) {
+    const newField = {
       id: `${fieldType}-${Date.now()}`,
       type: fieldType,
       properties: {
@@ -98,10 +68,10 @@
     fields = [...fields, newField];
   }
 
-  function updateField(field: Field, path: string, value: any) {
+  function updateField(field, path, value) {
     const updatedField = { ...field };
     const parts = path.split('.');
-    let current: any = updatedField;
+    let current = updatedField;
     
     for (let i = 0; i < parts.length - 1; i++) {
       current = current[parts[i]];
@@ -112,7 +82,7 @@
     selectedField = updatedField;
   }
 
-  function addOption(field: Field) {
+  function addOption(field) {
     const options = [...(field.options || [])];
     const newOption = {
       label: `Option ${options.length + 1}`,
@@ -122,13 +92,13 @@
     updateField(field, 'options', options);
   }
 
-  function removeOption(field: Field, index: number) {
+  function removeOption(field, index) {
     const options = [...field.options];
     options.splice(index, 1);
     updateField(field, 'options', options);
   }
 
-  function removeField(fieldId: string) {
+  function removeField(fieldId) {
     fields = fields.filter(f => f.id !== fieldId);
     if (selectedField?.id === fieldId) {
       selectedField = null;
@@ -144,30 +114,29 @@
       };
 
       const response = await axios.post('http://localhost:8000/api/forms', formData);
-      // console.log('Form saved successfully:', response.data);
       toasts.add({
-          title: "Success",
-          description: "Form Saved successful",
-          duration: 3000,
-          placement: "top-center",
-          type: "success",
-          theme: "dark",
-        });
-        goto("/template-management");
+        title: "Success",
+        description: "Form Saved successfully",
+        duration: 3000,
+        placement: "top-center",
+        type: "success",
+        theme: "dark",
+      });
+      goto("/template-management");
     } catch (error) {
       console.error('Error saving form:', error);
       toasts.add({
-          title: "false",
-          description: "did't save successful",
-          duration: 3000,
-          placement: "top-center",
-          type: "success",
-          theme: "dark",
-        });
+        title: "Error",
+        description: "Failed to save form",
+        duration: 3000,
+        placement: "top-center",
+        type: "error",
+        theme: "dark",
+      });
     }
   }
 
-  function updateValidation(field: Field, key: string, value: any) {
+  function updateValidation(field, key, value) {
     const validation = { ...field.validation, [key]: value };
     updateField(field, 'validation', validation);
   }
