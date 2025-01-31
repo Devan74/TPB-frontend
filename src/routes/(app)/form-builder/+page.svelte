@@ -25,6 +25,7 @@
   let fields = [];
   let selectedField = null;
   let formStatus = 'active';
+  let selectedtype = "";
 
   const inputTypes = [
     "text", "number", "email", "password", "tel", "url", "date", "time"
@@ -111,6 +112,7 @@
         formName,
         fields: fields.map(({ id, ...field }) => field),
         status: formStatus,
+        type: selectedtype,
       };
 
       const response = await axios.post('http://localhost:8000/api/forms', formData);
@@ -122,7 +124,7 @@
         type: "success",
         theme: "dark",
       });
-      goto("/template-management");
+      goto("/template-dashboard");
     } catch (error) {
       console.error('Error saving form:', error);
       toasts.add({
@@ -189,6 +191,17 @@
         >
           {formStatus === 'active' ? 'Active' : 'Inactive'}
         </button>
+
+        <!-- Form Type Selection -->
+        <select
+          bind:value={selectedtype}
+          class="border border-gray-300 px-3 py-2 rounded-md focus:ring-2 focus:ring-indigo-500"
+        >
+          <option value="">Select Type</option>
+          <option value="Doc Type">Doc Type</option>
+          <option value="Sub Doc Type">Sub Doc Type</option>
+        </select>
+        <!-- Save Template -->
         <button
           on:click={saveForm}
           class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"

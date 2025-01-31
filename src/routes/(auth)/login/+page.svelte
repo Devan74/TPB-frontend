@@ -53,7 +53,7 @@
           type: "success",
           theme: "dark",
         });
-        goto("/template-management");
+        goto("/template-dashboard");
       }
     } catch (validationErrors) {
       const newErrors = { email: "", password: "" };

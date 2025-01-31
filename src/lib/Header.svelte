@@ -29,7 +29,7 @@
     </NavBrand>
 
     <NavUl>
-      <NavLi href="/template-management" activeClass="text-indigo-500">
+      <NavLi href="/template-dashboard" activeClass="text-indigo-500">
         Template Management
       </NavLi>
       <NavLi
