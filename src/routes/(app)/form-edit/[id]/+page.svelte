@@ -146,7 +146,7 @@
         type: "success",
         theme: "dark",
       });
-      goto("/template-dashboard");
+      goto("/template-management");
     } catch (error) {
       console.error('Error saving form:', error);
       toasts.add({
