@@ -27,10 +27,13 @@
         alt="Fidelity National Financial Logo"
       />
     </NavBrand>
-
+    
     <NavUl>
       <NavLi href="/template-management" activeClass="text-indigo-500">
         Template Management
+      </NavLi>
+      <NavLi href="/doctype-category" activeClass="text-indigo-500">
+        DocType Category
       </NavLi>
       <NavLi
         on:click={logout}
